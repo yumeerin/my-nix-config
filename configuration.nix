@@ -193,6 +193,7 @@
     vscode
     vscode-extensions.rust-lang.rust-analyzer    
     gcc
+    lmms-full
 ];
 
   # Enable the Tailscale VPN.
