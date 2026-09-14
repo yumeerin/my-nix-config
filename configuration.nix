@@ -5,6 +5,13 @@
 { config, pkgs, ... }:
 
 {
+  zramSwap = {
+    enable = true;
+    algorithm = "lz4";
+    memoryPercent = 150;
+    priority = 100;
+  };
+
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
