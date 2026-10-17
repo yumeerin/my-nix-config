@@ -12,6 +12,12 @@
     priority = 100;
   };
 
+  # Enable the modern `nix` CLI commands and flakes.
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
+
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
@@ -20,7 +26,8 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-
+  programs.nix-ld.enable = true;
+   # services.snapd.enable = true; # removed: option no longer exists in pinned nixpkgs
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
@@ -201,6 +208,20 @@
     vscode-extensions.rust-lang.rust-analyzer    
     gcc
     lmms-full
+    aria2
+    wineWow64Packages.stable
+    slack
+    openh264
+    vlc
+    reaper
+    python3
+    vscodium-fhs
+    python3Packages.pip
+    # Lookout (Hack Club time-tracking): .deb extracted + FHS sandbox
+    # (see ./lookout.nix)
+
+    (pkgs.callPackage ./lookout.nix { })
+    (pkgs.callPackage ./helium.nix { })
 ];
 
   # Enable the Tailscale VPN.
@@ -232,4 +253,9 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "26.05"; # Did you read the comment?
 
+
+programs.appimage = {
+  enable = true;
+  binfmt = true;
+};
 }
